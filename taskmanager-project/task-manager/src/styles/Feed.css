@@ -1,0 +1,206 @@
+:root {
+  --bitrix-blue: #2fc6f6;
+  --bitrix-green: #bbed21;
+  --bg-grey: #f0f3f5;
+  --border-color: #edeef0;
+  --text-grey: #535c69;
+}
+
+.bitrix-feed-container {
+  width: 100%;
+  padding: 20px;
+  background-color: var(--bg-grey);
+  min-height: 100vh;
+  box-sizing: border-box;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  position: relative;
+}
+
+.bitrix-composer {
+  width: 100%;
+  background: white;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tabs */
+.composer-tabs {
+  display: flex;
+  padding: 0 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab {
+  padding: 14px 20px;
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-grey);
+  text-transform: uppercase;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+  color: #000;
+  border-bottom: 2px solid var(--bitrix-blue);
+}
+
+/* Content Area */
+.composer-content {
+  padding: 15px 20px;
+}
+
+.composer-textarea {
+  width: 100%;
+  min-height: 100px;
+  border: 1px solid transparent;
+  font-size: 15px;
+  resize: vertical;
+  outline: none;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Recipient "To" Bar */
+.recipient-row {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-top: 1px solid #f2f3f4;
+  gap: 10px;
+}
+
+.to-label {
+  font-size: 14px;
+  color: #a9adb3;
+  padding-top: 6px;
+}
+
+.recipient-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+}
+
+.pill {
+  background: #eef2f4;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 13px;
+  color: #525c69;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.all-pill {
+  background: #d5f5fd;
+  color: #2067b0;
+  font-weight: 600;
+}
+
+.remove-pill {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #a9adb3;
+  padding: 0;
+}
+
+.remove-pill:hover { color: #525c69; }
+
+/* Input & Dropdown */
+.add-recipient-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 150px;
+}
+
+.recipient-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.recipient-dropdown {
+  position: absolute;
+  z-index: 1001;
+  background: #fff;
+  width: 260px;
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.dropdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+/* Dropdown Items */
+.dropdown-item {
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.dropdown-item:hover { background: #f6f8f9; }
+
+.user-icon {
+  width: 24px;
+  height: 24px;
+  background: #55d0e0;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+/* Footer Actions */
+.composer-footer {
+  padding: 12px 20px;
+  background: #f8f9fa;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: 10px;
+}
+
+.send-button {
+  background: var(--bitrix-blue);
+  color: white;
+  border: none;
+  padding: 8px 25px;
+  border-radius: 2px;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.send-button:hover { background: #1eb5e6; }
+
+.cancel-button {
+  background: none;
+  border: none;
+  color: #a9adb3;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}

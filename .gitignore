@@ -1,0 +1,29 @@
+SalaryIncrementController.php
+view/SalaryIncrement/
+
+
+Tables:
+`salary_hike`, `salary_hike_details`.
+
+New fields:
+`emp_ctc_transaction`, `emp_ctc_upload`
+
+Trigger:
+emp_ctc_upload_ai
+
+
+
+INSERT INTO `hrm_menu` (`parent_id`, `menu_url`, `menu_title`, `menu_name`, `active`, `iconCls`, `user_id`, `plan`) VALUES
+(4,    'SalaryIncrement/index',    'Salary Management',    'Salary Management',    'N',    'fa fa-circle-o icon-content',    1,    'standard');
+
+
+Support596:
+
+structure_preview_prc()
+calculate_emp_salary_breakup()
+calculate_emp_component_breakup()
+salary_structure_limit_prc()
+ctc_component_upload_prc()
+copy_salary_structure_to_new()
+ctc_component_update_and_upload_prc()
+ctc_component_upload_prc()
