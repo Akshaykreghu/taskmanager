@@ -14,7 +14,7 @@ function Chat() {
   const stompClientRef = useRef(null);
 
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
-  const myEmpKey = loggedInUser?.emp_pkey;
+  const myEmpKey = String(loggedInUser?.emp_pkey);
 
   // Fetch Employees
   useEffect(() => {
@@ -34,36 +34,28 @@ function Chat() {
   useEffect(() => {
     const socket = new SockJS("http://localhost:8080/ws-chat"); // backend endpoint
     const client = new Client({
-      webSocketFactory: () => socket,
+      webSocketFactory: () => new SockJS("http://localhost:8080/ws-chat"),
+      connectHeaders: {
+        emp_pkey: myEmpKey.toString(),
+      },
       debug: (str) => console.log(str),
       reconnectDelay: 5000,
     });
 
     client.onConnect = () => {
       console.log("Connected to WebSocket");
+      console.log("Connecting with emp_pkey:", myEmpKey);
 
-      // Subscribe to public topic
-      client.subscribe("/topic/public", (message) => {
+      // Subscribe to private queue
+      client.subscribe("/user/queue/messages", (message) => {
         if (!message.body) return;
 
         const receivedMessage = JSON.parse(message.body);
-        
-        // Ignore messages not meant for this user
-        if (
-          receivedMessage.sender !== myEmpKey &&
-          receivedMessage.receiver !== myEmpKey
-        ) {
-          return;
-        }
 
-        // ❗ Ignore own echoed message
-        if (receivedMessage.sender === myEmpKey) return;
+        const senderId = String(receivedMessage.sender);
+        const receiverId = String(receivedMessage.receiver);
 
-        // Determine chat partner
-        const otherUserId =
-          receivedMessage.sender === myEmpKey
-            ? receivedMessage.receiver
-            : receivedMessage.sender;
+        const otherUserId = senderId === myEmpKey ? receiverId : senderId;
 
         setChats((prev) => ({
           ...prev,
@@ -71,7 +63,7 @@ function Chat() {
             ...(prev[otherUserId] || []),
             {
               text: receivedMessage.content,
-              sender: receivedMessage.sender === myEmpKey ? "me" : "them",
+              sender: senderId === myEmpKey ? "me" : "them",
               time: new Date().toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -85,7 +77,9 @@ function Chat() {
     client.activate();
     stompClientRef.current = client;
 
-    return () => client.deactivate();
+    return () => {
+      if (client.active) client.deactivate();
+    };
   }, []);
 
   const handleSendMessage = (e) => {
@@ -94,7 +88,7 @@ function Chat() {
 
     const message = {
       sender: myEmpKey,
-      receiver: selectedUser.emp_pkey,
+      receiver: String(selectedUser.emp_pkey),
       content: messageInput,
     };
 
@@ -104,23 +98,6 @@ function Chat() {
         destination: "/app/send-message",
         body: JSON.stringify(message),
       });
-
-      // Add message locally
-      const userId = selectedUser.emp_pkey;
-      setChats((prev) => ({
-        ...prev,
-        [userId]: [
-          ...(prev[userId] || []),
-          {
-            text: messageInput,
-            sender: "me",
-            time: new Date().toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            }),
-          },
-        ],
-      }));
 
       setMessageInput("");
     } else {
